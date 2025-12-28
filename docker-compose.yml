@@ -1,0 +1,12 @@
+services:
+  wakeywakey:
+    build:
+      context: ./src
+      dockerfile: Dockerfile
+    container_name: wakeywakey
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - DISCORD_GUILD_ID=${DISCORD_GUILD_ID}
+      - SELF_USER_ID=${SELF_USER_ID}
+    restart: unless-stopped
+    network_mode: "host"
