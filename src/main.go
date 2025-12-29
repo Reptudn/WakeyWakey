@@ -5,6 +5,7 @@ import (
 	"os/signal"
 	"syscall"
 	"wakeywakey/commands"
+	"wakeywakey/database"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -29,6 +30,14 @@ func main() {
 	}
 
 	var err error
+	
+	db, err := database.Init("wakeywakey.db")
+	if err != nil {
+		panic("Failed to initialize database: " + err.Error())
+	}
+	defer db.Close()
+	_ = db
+
 	BOT, err = discordgo.New("Bot " + BOT_TOKEN)
 	if err != nil {
 		panic("Failed to create Discord session: " + err.Error())
