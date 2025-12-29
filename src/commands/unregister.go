@@ -53,16 +53,16 @@ func HandleUnregister(s *discordgo.Session, i *discordgo.InteractionCreate) {
 func HandleUnregisterAutocomplete(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	userId := i.Member.User.ID
 
-	aliases, err := database.GetWakeEntriesByUser(userId)
+	entries, err := database.GetAllEntriesByUserId(userId)
 	if err != nil {
 		return
 	}
 
 	var choices []*discordgo.ApplicationCommandOptionChoice
-	for _, alias := range aliases {
+	for _, entry := range entries {
 		choices = append(choices, &discordgo.ApplicationCommandOptionChoice{
-			Name:  alias,
-			Value: alias,
+			Name:  entry.Alias,
+			Value: entry.Alias,
 		})
 	}
 

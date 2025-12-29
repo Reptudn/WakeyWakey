@@ -56,7 +56,3 @@ func HandleRegister(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		},
 	})
 }
-
-func HandleRegisterAutocomplete(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	// No autocomplete needed for register command
-}

@@ -64,27 +64,32 @@ func RemoveWakeEntryByAlias(userId string, alias string) error {
 	return err
 }
 
-func GetWakeEntriesByUser(userId string) ([]string, error) {
+type WakeEntry struct {
+	Alias      string
+	MacAddress string
+}
+
+func GetAllEntriesByUserId(userId string) ([]WakeEntry, error) {
 	if db == nil {
 		return nil, fmt.Errorf("Database not initialized")
 	}
 
-	rows, err := db.Query("SELECT alias FROM wakes WHERE user_id = ?", userId)
+	rows, err := db.Query("SELECT alias, mac_address FROM wakes WHERE user_id = ?", userId)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var aliases []string
+	var entries []WakeEntry
 	for rows.Next() {
-		var alias string
-		if err := rows.Scan(&alias); err != nil {
+		var entry WakeEntry
+		if err := rows.Scan(&entry.Alias, &entry.MacAddress); err != nil {
 			return nil, err
 		}
-		aliases = append(aliases, alias)
+		entries = append(entries, entry)
 	}
 
-	return aliases, nil
+	return entries, nil
 }
 
 func GetMacByAlias(userId string, alias string) (string, error) {

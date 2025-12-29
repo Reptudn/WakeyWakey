@@ -67,16 +67,16 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 }
 
 func HandleWakeAutocomplete(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	aliases, err := database.GetWakeEntriesByUser(i.Member.User.ID)
+	entries, err := database.GetAllEntriesByUserId(i.Member.User.ID)
 	if err != nil {
 		return
 	}
 
 	var choices []*discordgo.ApplicationCommandOptionChoice
-	for _, alias := range aliases {
+	for _, entry := range entries {
 		choices = append(choices, &discordgo.ApplicationCommandOptionChoice{
-			Name:  alias,
-			Value: alias,
+			Name:  entry.Alias,
+			Value: entry.Alias,
 		})
 	}
 
