@@ -10,3 +10,5 @@ services:
       - SELF_USER_ID=${SELF_USER_ID}
     restart: unless-stopped
     network_mode: "host"
+    volumes:
+      - ./data:/app/data

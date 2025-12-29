@@ -8,16 +8,17 @@ import (
 )
 
 func SendWakeOnLANPacket(mac string) error {
+
+	if (!IsValidMacAddress(mac)) {
+		return fmt.Errorf("Invalid MAC address format")
+	}
+
 	mac = strings.ReplaceAll(mac, ":", "")
 	mac = strings.ReplaceAll(mac, "-", "")
 
-	if len(mac) != 12 {
-		return fmt.Errorf("invalid MAC address format")
-	}
-
 	macBytes, err := hex.DecodeString(mac)
 	if err != nil {
-		return fmt.Errorf("failed to decode MAC address: %v", err)
+		return fmt.Errorf("Failed to decode MAC address: %v", err)
 	}
 
 	packet := make([]byte, 102)
@@ -32,13 +33,13 @@ func SendWakeOnLANPacket(mac string) error {
 
 	conn, err := net.Dial("udp", "255.255.255.255:9")
 	if err != nil {
-		return fmt.Errorf("failed to dial UDP: %v", err)
+		return fmt.Errorf("Failed to dial UDP: %v", err)
 	}
 	defer conn.Close()
 
 	_, err = conn.Write(packet)
 	if err != nil {
-		return fmt.Errorf("failed to send packet: %v", err)
+		return fmt.Errorf("Failed to send packet: %v", err)
 	}
 
 	fmt.Println("Sending Wake-on-LAN packet to:", mac)

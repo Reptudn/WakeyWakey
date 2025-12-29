@@ -7,48 +7,32 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-var Wake = discordgo.ApplicationCommand{
-	Name:        "wake",
-	Description: "Sends a Wake-on-LAN packet to wake up your PC.",
+var UnregisterWake = discordgo.ApplicationCommand{
+	Name:        "unregister",
+	Description: "Unregisters a PC by its alias for Wake-on-LAN.",
 	Options: []*discordgo.ApplicationCommandOption{
 		{
 			Type: discordgo.ApplicationCommandOptionString,
 			Name: "alias",
-			Description: "The Alias of the PC to wake up.",
+			Description: "The alias of the PC to unregister.",
 			Required: true,
-			Autocomplete: true,
 		},
 	},
 }
 
-func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
+func HandleUnregister(s *discordgo.Session, i *discordgo.InteractionCreate) {
 
 	options := i.ApplicationCommandData().Options
 	alias := options[0].StringValue()
 
-	var err error
-	macAddress, err := database.GetMacByAlias(i.Member.User.ID, alias)
+	err := database.RemoveWakeEntryByAlias(i.Member.User.ID, alias)
 	if err != nil {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionResponseData{
 				Flags: 1 << 6,
 				Embeds: []*discordgo.MessageEmbed{
-					utils.EmbedError("No PC registered", "No PC registered with alias '" + alias + "': " + err.Error()),
-				},
-			},
-		})
-		return
-	}
-
-	err = utils.SendWakeOnLANPacket(macAddress)
-	if err != nil {
-		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-			Type: discordgo.InteractionResponseChannelMessageWithSource,
-			Data: &discordgo.InteractionResponseData{
-				Flags: 1 << 6,
-				Embeds: []*discordgo.MessageEmbed{
-					utils.EmbedError("Failed to send Wake-on-LAN packet", "Could not send Wake-on-LAN packet to '" + alias + "': " + err.Error()),
+					utils.EmbedError("Unregistration Failed", "Failed to unregister PC: "+err.Error()),
 				},
 			},
 		})
@@ -60,14 +44,16 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		Data: &discordgo.InteractionResponseData{
 			Flags: 1 << 6,
 			Embeds: []*discordgo.MessageEmbed{
-				utils.EmbedSuccess("Wake-on-LAN packet sent", "Wake-on-LAN packet sent successfully to '" + alias + "'!"),
+				utils.EmbedSuccess("Unregistration Successful", "Successfully unregistered PC."),
 			},
 		},
 	})
 }
 
-func HandleWakeAutocomplete(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	aliases, err := database.GetWakeEntriesByUser(i.Member.User.ID)
+func HandleUnregisterAutocomplete(s *discordgo.Session, i *discordgo.InteractionCreate) {
+	userId := i.Member.User.ID
+
+	aliases, err := database.GetWakeEntriesByUser(userId)
 	if err != nil {
 		return
 	}
