@@ -67,23 +67,6 @@ Remove a PC from your registry.
 /unregister my-gaming-pc
 ```
 
-## Project Structure
-
-```
-src/
-├── main.go              # Bot initialization & Discord handlers
-├── commands/
-│   ├── wake.go          # Wake command & autocomplete
-│   ├── register.go      # Register command
-│   └── unregister.go    # Unregister command
-├── database/
-│   └── sqlite.go        # SQLite wrapper & initialization
-└── utils/
-    ├── wakeonlan.go     # WoL packet sender
-    ├── format.go        # Formatting utilities
-    └── embeds.go        # Discord embed helpers
-```
-
 ## Dependencies
 
 - `github.com/bwmarrin/discordgo` — Discord API bindings
