@@ -67,6 +67,14 @@ Remove a PC from your registry.
 /unregister my-gaming-pc
 ```
 
+### `/list`
+
+Lists all you added Devices.
+
+```
+/list
+```
+
 ## Dependencies
 
 - `github.com/bwmarrin/discordgo` — Discord API bindings
