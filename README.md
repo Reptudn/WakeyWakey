@@ -21,10 +21,11 @@ A Discord bot to send Wake-on-LAN (WoL) packets to your PCs from Discord slash c
 ## Setup
 
 This Project is currently setup that is works with only Docker really.
+But if you still want to execute it without Docker you would have to set the env vars manually first before running the bot.
 
 ### 1. Environment Variables
 
-Create a `.env` file or copy and edit the `.env.example` and renameit to `.env`:
+Create a `.env` file or copy and edit the `.env.example` and rename it to `.env`:
 
 ```bash
 export DISCORD_BOT_TOKEN="your_bot_token_here"
