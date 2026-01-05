@@ -116,7 +116,15 @@ func main() {
 	}
 	defer BOT.Close()
 	
-	BOT.UpdateGameStatus(0, "with MAC Adresses")
+	BOT.UpdateStatusComplex(discordgo.UpdateStatusData{
+		Status: "online",
+		Activities: []*discordgo.Activity{
+			{
+				Name: "for WOL commands",
+				Type: discordgo.ActivityTypeListening,
+			},
+		},
+	})
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
