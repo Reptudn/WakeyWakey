@@ -41,6 +41,7 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		return
 	}
 
+	// First try my implementation
 	err = utils.SendWakeOnLANPacket(macAddress)
 	if err != nil {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
@@ -49,6 +50,21 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 				Flags: 1 << 6,
 				Embeds: []*discordgo.MessageEmbed{
 					utils.EmbedError("Failed to send Wake-on-LAN packet", "Could not send Wake-on-LAN packet to '" + alias + "': " + err.Error()),
+				},
+			},
+		})
+		return
+	}
+
+	// If that fails, try using the wakeonlan command
+	err = utils.sendWakeOnLANPacketViaCommand(macAddress)
+	if err != nil {
+		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseChannelMessageWithSource,
+			Data: &discordgo.InteractionResponseData{
+				Flags: 1 << 6,
+				Embeds: []*discordgo.MessageEmbed{
+					utils.EmbedError("Failed to send Wake-on-LAN packet via command", "Could not send Wake-on-LAN packet to '" + alias + "' via command: " + err.Error()),
 				},
 			},
 		})
