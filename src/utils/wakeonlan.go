@@ -48,14 +48,14 @@ func SendWakeOnLANPacket(mac string) error {
 }
 
 func sendWakeOnLANPacketViaCommand(mac string) error {
-    cmd := exec.Command("wakeonlan", mac)
+	cmd := exec.Command("wakeonlan", mac)
 
-    output, err := cmd.CombinedOutput()
-    if err != nil {
-        return fmt.Errorf("Failed to execute wakeonlan command: %v, output: %s", err, output)
-    }
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("Failed to execute wakeonlan command: %v, output: %s", err, output)
+	}
 	
-    fmt.Println("Wake-on-LAN packet sent via command:", string(output))
-    return nil
+	fmt.Println("Wake-on-LAN packet sent via command:", string(output))
+	return nil
 
 }
