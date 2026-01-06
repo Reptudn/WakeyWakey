@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"strings"
+	"os/exec"
 )
 
 func SendWakeOnLANPacket(mac string) error {
@@ -44,4 +45,17 @@ func SendWakeOnLANPacket(mac string) error {
 
 	fmt.Println("Sending Wake-on-LAN packet to:", mac)
 	return nil
+}
+
+func sendWakeOnLANPacketViaCommand(mac string) error {
+    cmd := exec.Command("wakeonlan", mac)
+
+    output, err := cmd.CombinedOutput()
+    if err != nil {
+        return fmt.Errorf("Failed to execute wakeonlan command: %v, output: %s", err, output)
+    }
+	
+    fmt.Println("Wake-on-LAN packet sent via command:", string(output))
+    return nil
+
 }

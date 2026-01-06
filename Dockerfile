@@ -10,6 +10,8 @@ FROM alpine:3.20
 
 WORKDIR /bot
 
+RUN apk add --no-cache -y wakeonlan
+
 COPY --from=build /bot/wakeywakey .
 
 ENV PRODUCTION="true"
