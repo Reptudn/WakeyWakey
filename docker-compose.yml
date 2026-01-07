@@ -1,7 +1,7 @@
 services:
   wakeywakey:
     build:
-      context: ./src
+      context: .
       dockerfile: Dockerfile
     container_name: wakeywakey
     environment:
@@ -10,5 +10,7 @@ services:
       - SELF_USER_ID=${SELF_USER_ID}
     restart: unless-stopped
     network_mode: "host"
+    cap_add:
+      - NET_ADMIN
     volumes:
       - ./data:/app/data

@@ -57,7 +57,7 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	}
 
 	// If that fails, try using the wakeonlan command
-	err = utils.sendWakeOnLANPacketViaCommand(macAddress)
+	err = utils.SendWakeOnLANPacketViaCommand(macAddress)
 	if err != nil {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Type: discordgo.InteractionResponseChannelMessageWithSource,

@@ -39,7 +39,7 @@ func main() {
 
 	dbPath := "wakeywakey.db"
 	if os.Getenv("PRODUCTION") == "true" {
-		dbPath = "./data/wakeywakey.db"
+		dbPath = "/app/data/wakeywakey.db"
 	}
 	err = database.Init(dbPath)
 	if err != nil {

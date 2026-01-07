@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"fmt"
 	"net"
-	"strings"
 	"os/exec"
+	"strings"
 )
 
 func SendWakeOnLANPacket(mac string) error {
@@ -47,8 +47,8 @@ func SendWakeOnLANPacket(mac string) error {
 	return nil
 }
 
-func sendWakeOnLANPacketViaCommand(mac string) error {
-	cmd := exec.Command("wakeonlan", mac)
+func SendWakeOnLANPacketViaCommand(mac string) error {
+	cmd := exec.Command("awake", mac)
 
 	output, err := cmd.CombinedOutput()
 	if err != nil {
