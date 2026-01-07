@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"wakeywakey/database"
 	"wakeywakey/utils"
 
@@ -65,6 +66,8 @@ func HandleUnregisterAutocomplete(s *discordgo.Session, i *discordgo.Interaction
 			Value: entry.Alias,
 		})
 	}
+
+	fmt.Println("Provided autocomplete choices for user " + i.Member.User.Username + " (" + i.Member.User.ID + ")")
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionApplicationCommandAutocompleteResult,

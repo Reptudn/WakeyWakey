@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 	"wakeywakey/commands"
 	"wakeywakey/database"
+	"wakeywakey/utils"
 
 	"github.com/bwmarrin/discordgo"
 )
@@ -50,12 +52,29 @@ func main() {
 		panic("Failed to create Discord session: " + err.Error())
 	}
 
+	// Set intents so the bot appears in the member list
+	BOT.Identify.Intents = discordgo.IntentsGuilds | discordgo.IntentsGuildPresences
+
 	BOT.AddHandler(func (session *discordgo.Session, interaction *discordgo.InteractionCreate){
 
 		// this is to restrict the bot to only respond to a specific user if SELF_USER_ID is set
 		if SELF_USER_ID != "" &&interaction.Member.User.ID != SELF_USER_ID {
+			fmt.Println("Blocked command from user " + interaction.Member.User.Username + " (" + interaction.Member.User.ID + ")")
+
+			session.InteractionRespond(interaction.Interaction, &discordgo.InteractionResponse{
+				Type: discordgo.InteractionResponseChannelMessageWithSource,
+				Data: &discordgo.InteractionResponseData{
+					Flags: 1 << 6,
+					Embeds: []*discordgo.MessageEmbed{
+						utils.EmbedError("Access Denied", "You are not authorized to use this bot."),
+					},
+				},
+			})
+
 			return
 		}
+
+		fmt.Println("Handle Command: " + interaction.ApplicationCommandData().Name + " from user " + interaction.Member.User.Username + " (" + interaction.Member.User.ID + ")")
 
 		switch interaction.Type {
 
@@ -125,6 +144,8 @@ func main() {
 			},
 		},
 	})
+
+	fmt.Println("Bot running.")
 
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)

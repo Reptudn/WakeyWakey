@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"wakeywakey/database"
 	"wakeywakey/utils"
 
@@ -45,6 +46,8 @@ func HandleRegister(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		})
 		return
 	}
+
+	fmt.Println("Handled registration for user " + i.Member.User.Username + " (" + i.Member.User.ID + "): " + alias + " - " + macAddress)
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,

@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"wakeywakey/database"
 	"wakeywakey/utils"
 
@@ -70,6 +71,8 @@ func HandleWake(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		})
 		return
 	}
+
+	fmt.Println("Sent Wake-on-LAN packet to " + alias + " (" + macAddress + ") for user " + i.Member.User.Username + " (" + i.Member.User.ID + ")")
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,

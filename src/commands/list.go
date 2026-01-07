@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"wakeywakey/database"
 	"wakeywakey/utils"
 
@@ -57,6 +58,8 @@ func HandleListDevices(s *discordgo.Session, i *discordgo.InteractionCreate) {
 		}
 		embed.Fields = append(embed.Fields, field)
 	}
+
+	fmt.Println("Listed devices for user " + i.Member.User.Username + " (" + i.Member.User.ID + ")")
 
 	s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 		Type: discordgo.InteractionResponseChannelMessageWithSource,
