@@ -2,6 +2,8 @@
 
 A Discord bot to send Wake-on-LAN (WoL) packets to your PCs from Discord slash commands. Register your machines, manage them with aliases, and wake them up instantly — all from Discord.
 
+> Credits to my homie [@Tubinex](https://github.com/Tubinex) for the idea and the name to this repo and bot <3
+
 ## Features
 
 - **Register PCs** — Store PC aliases with their MAC addresses
