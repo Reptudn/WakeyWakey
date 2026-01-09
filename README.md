@@ -29,10 +29,10 @@ But if you still want to execute it without Docker you would have to set the env
 
 Create a `.env` file or copy and edit the `.env.example` and rename it to `.env`:
 
-```bash
-export DISCORD_BOT_TOKEN="your_bot_token_here"
-export DISCORD_GUILD_ID="your_guild_id_here"
-export SELF_USER_ID="your_discord_user_id_here"  # Optional: restrict bot to your commands only
+```env
+DISCORD_BOT_TOKEN="your_bot_token_here"
+DISCORD_GUILD_ID="your_guild_id_here"
+# SELF_USER_ID="your_discord_user_id_here"  # Optional: restrict bot to your commands only
 ```
 
 ### 2. Run with Docker
@@ -108,3 +108,4 @@ Lists all you added Devices.
 - Verify MAC address format (with colons: `AA:BB:CC:DD:EE:FF`).
 - Ensure target PC has WoL enabled in BIOS.
 - Some networks block broadcast packets—check firewall rules.
+- If your PC uses LAN to USB you might need to change BIOS settings to power the USB-Ports even when the PC is not running or put the PC in Sleep Mode before you need it.
